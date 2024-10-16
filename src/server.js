@@ -8,12 +8,12 @@ const server = http.createServer(async (req, res) => {
   const { method, url } = req
 
   await json(req, res)
-
+  
   const route = routes.find(route => {
     // esse "test" é uma funçao que as regex tem
     // ele retorna booleano. neste caso, se a url tiver certo,
     // retornara true. caso contrario, false.
-    
+    console.log(route)
     
     // console.log(route.path.test(url))
     return route.method == method && route.path.test(url)

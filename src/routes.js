@@ -26,13 +26,13 @@ export const routes = [
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const { title, description, completed_at, created_at, updated_at } = req.body
+            const { title, description, created_at, updated_at } = req.body
 
             const task = {
                 id: randomUUID(),
                 title,
                 description,
-                completed_at,
+                completed_at: null,
                 created_at,
                 updated_at,
             }
@@ -60,7 +60,7 @@ export const routes = [
             database.update("tasks", id, {
                 title,
                 description,
-                completed_at,
+                completed_at: null,
                 created_at,
                 updated_at,
             })
