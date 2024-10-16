@@ -4,6 +4,14 @@ import { buildRoutePath } from './utils/build-route-path.js'
 
 const database = new Database()
 
+function getFormattedDate() {
+    const today = new Date();
+    return today.getFullYear() + '-' + 
+           String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+           String(today.getDate()).padStart(2, '0');
+}
+
+
 export const routes = [
     {
         method: 'GET',
@@ -26,15 +34,16 @@ export const routes = [
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            const { title, description, created_at, updated_at } = req.body
+            const { title, description } = req.body       
+            const formattedDate = getFormattedDate() 
 
             const task = {
                 id: randomUUID(),
                 title,
                 description,
                 completed_at: null,
-                created_at,
-                updated_at,
+                created_at: formattedDate,
+                updated_at: formattedDate,
             }
 
             database.insert('tasks', task)
@@ -55,14 +64,13 @@ export const routes = [
         path: buildRoutePath('/tasks/:id'),
         handler: (req, res) => {
             const { id } = req.params
-            const { title, description, completed_at, created_at, updated_at } = req.body
+            const { title, description } = req.body
+            const formattedDate = getFormattedDate() 
 
             database.update("tasks", id, {
                 title,
                 description,
-                completed_at: null,
-                created_at,
-                updated_at,
+                updated_at: formattedDate,
             })
 
             return res.writeHead(204).end()
