@@ -1,19 +1,18 @@
-import fs from 'fs';
+import fs from 'node:fs';
 import { parse } from 'csv-parse';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 import { createReadStream } from 'fs'; 
-import { routes } from '../routes.js';
+import { routes } from '../src/routes.js';
 
 const postRoute = routes.find(route => route.method === 'POST');
-console.log(postRoute)
 
-const csvFilePath = resolve('./tasksCsv.csv');
+const csvFilePath = resolve('./streams/tasksCsv.csv');
 
-(async () => {
-    // Inicializa o contador aqui, em um escopo mais amplo
+async function csvProcessor() {
+
     let notFirstRecord = false;
 
-    // Lê o arquivo CSV
+
     fs.readFile(csvFilePath, 'utf8', async (err, data) => {
         if (err) {
             console.error('Erro ao ler o arquivo CSV:', err);
@@ -23,23 +22,20 @@ const csvFilePath = resolve('./tasksCsv.csv');
         const tasksCsv = createReadStream(csvFilePath);
         const parser = tasksCsv.pipe(parse());
 
-        // Reporta o início
-        process.stdout.write('start\n');
-
-        // Itera através de cada registro usando for await na função assíncrona superior
+        
         for await (const record of parser) {
-            // Crie um objeto fake para req e res
+        
             const req = {
                 body: {
-                    title: record[0], // Supondo que o título esteja na primeira coluna
-                    description: record[1], // Supondo que a descrição esteja na segunda coluna
+                    title: record[0], 
+                    description: record[1], // 
                 }
             };
 
             const res = {
                 writeHead: (statusCode) => {
                     console.log(`Response Status: ${statusCode}`);
-                    return res; // Permite encadear
+                    return res; 
                 },
                 end: () => {
                     console.log('Response ended.');
@@ -47,19 +43,19 @@ const csvFilePath = resolve('./tasksCsv.csv');
             };
 
             if (notFirstRecord) {
-                // Chame a função handler da rota POST
+                
                 await postRoute.handler(req, res);
-            } else{
+            } else {
                 {}
             }
             
             notFirstRecord = true;
 
-            // Operação assíncrona fictícia
+            
             await new Promise((resolve) => setTimeout(resolve, 100));
         }
-
-        // Reporta o fim após a iteração
-        process.stdout.write('...done\n');
     });
-})();
+}
+
+
+csvProcessor();
