@@ -54,6 +54,8 @@ export class Database {
         if (rowIndex > -1) {
             this.#database[table].splice(rowIndex, 1)
             this.#persist()
+        } else {
+            throw new Error(`User with ID ${id} not found`)
         }
     }
 
@@ -69,6 +71,8 @@ export class Database {
                 ...data
             }
             this.#persist()
+        } else {
+            throw new Error(`User with ID ${id} not found`)
         }
     }
 }
