@@ -33,7 +33,6 @@ export const routes = [
         method: 'POST',
         path: buildRoutePath('/tasks'),
         handler: (req, res) => {
-            // Verifique se req.body está definido e se não é null
             if (!req.body) {
                 return res.writeHead(400, { 'Content-Type': 'application/json' })
                     .end(JSON.stringify({ error: 'Request body is required' }));
@@ -81,7 +80,6 @@ export const routes = [
         handler: (req, res) => {
             const { id } = req.params;
             
-            // Verifique se req.body está definido e se não é null
             if (!req.body) {
                 return res.writeHead(400, { 'Content-Type': 'application/json' })
                     .end(JSON.stringify({ error: 'Request body is required' }));
