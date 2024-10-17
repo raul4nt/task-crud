@@ -100,7 +100,7 @@ export const routes = [
                     return res.writeHead(204).end();
                 } catch {
                     return res.writeHead(404, { 'Content-Type': 'application/json' })
-                        .end(JSON.stringify({ error: `User with ID ${id} not found` }));
+                        .end(JSON.stringify({ error: `Task with ID ${id} not found` }));
                 }
             } else {
                 return res.writeHead(400, { 'Content-Type': 'application/json' })
@@ -123,7 +123,7 @@ export const routes = [
                 return res.writeHead(204).end();
             } catch {
                 return res.writeHead(404, { 'Content-Type': 'application/json' })
-                    .end(JSON.stringify({ error: `User with ID ${id} not found` }));
+                    .end(JSON.stringify({ error: `Task with ID ${id} not found` }));
             }
         }
     }
